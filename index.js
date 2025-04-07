@@ -20,27 +20,7 @@ app.get('/api/students', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-// GET Kondaji Chiwda Products
-app.get('/api/kondaji', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM kondaji_chiwda ORDER BY id');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching chiwda:', err);
-    res.status(500).send('Server error');
-  }
-});
 
-// GET Kondaji Chiwda Products
-app.get('/api/kondaji', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM kondaji_chiwda ORDER BY id');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching chiwda:', err);
-    res.status(500).send('Server error');
-  }
-});
 
 
 
