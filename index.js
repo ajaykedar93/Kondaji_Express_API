@@ -5,7 +5,9 @@ const pool = require('./db');
 const imageRoutes = require('./routes/imageRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
-
+const paymentRoutes = require('./routes/paymentRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 const app = express(); // ✅ this was missing in your code above
 
@@ -17,6 +19,22 @@ app.use(express.json());
 app.use('/api', imageRoutes);
 app.use('/api', userRoutes);
 app.use('/api', productRoutes);
+app.use('/api', paymentRoutes);
+app.use('/api', orderRoutes);
+app.use('/api', notificationRoutes);
+
+require('dotenv').config();
+
+// GET all products
+router.get('/products', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM products ORDER BY id ASC');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).json({ error: 'Server error fetching products' });
+  }
+});
 
 
 
