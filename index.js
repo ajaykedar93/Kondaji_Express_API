@@ -25,19 +25,6 @@ app.use('/api', notificationRoutes);
 
 require('dotenv').config();
 
-// GET all products
-router.get('/products', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM products ORDER BY id ASC');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching products:', err);
-    res.status(500).json({ error: 'Server error fetching products' });
-  }
-});
-
-
-
 // Get all students
 app.get('/api/students', async (req, res) => {
   try {
