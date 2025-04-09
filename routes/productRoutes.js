@@ -5,7 +5,7 @@ const pool = require('../db');
 // GET all products
 router.get('/products', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM products ORDER BY id ASC');
+    const result = await pool.query('SELECT * FROM product');
     res.json(result.rows);
   } catch (err) {
     console.error('Error fetching products:', err);
