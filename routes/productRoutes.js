@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
+
 // GET all products
 router.get('/products', async (req, res) => {
   try {
@@ -13,6 +14,7 @@ router.get('/products', async (req, res) => {
     res.status(500).json({ error: 'Server error fetching products' });
   }
 });
+
 
 // GET product by ID
 router.get('/product/:id', async (req, res) => {
