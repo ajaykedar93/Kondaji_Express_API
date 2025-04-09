@@ -4,7 +4,7 @@ const pool = require('./db');
 
 const imageRoutes = require('./routes/imageRoutes');
 const userRoutes = require('./routes/userRoutes');
-const productRoutes = require('./routes/productRoutes');
+const productRoutes = require('./routes/product');
 const paymentRoutes = require('./routes/paymentRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
@@ -18,7 +18,7 @@ app.use(express.json());
 // Routes
 app.use('/api', imageRoutes);
 app.use('/api', userRoutes);
-app.use('/api', productRoutes);
+app.use('/', productRoutes);
 app.use('/api', paymentRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', notificationRoutes);
