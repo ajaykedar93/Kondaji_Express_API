@@ -1,0 +1,35 @@
+const express = require('express');
+const router = express.Router();
+const pool = require('../db'); // assumes db.js contains your PostgreSQL Pool config
+
+// POST /api/users/register
+router.post('/register', async (req, res) => {
+  const { name, email, password, phone, address } = req.body;
+
+  try {
+    // Check if user already exists
+    const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (userExists.rows.length > 0) {
+      return res.status(400).json({ message: "User already exists with this email." });
+    }
+
+    // Insert new user
+    const newUser = await pool.query(
+      `INSERT INTO users (name, email, password, phone, address)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [name, email, password, phone, address]
+    );
+
+    res.status(201).json({
+      message: "User registered successfully!",
+      user: newUser.rows[0]
+    });
+
+  } catch (err) {
+    console.error("Registration error:", err);
+    res.status(500).json({ message: "Server error during registration." });
+  }
+});
+
+module.exports = router;

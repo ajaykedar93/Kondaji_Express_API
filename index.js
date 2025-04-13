@@ -6,7 +6,7 @@ const pool = require('./db');
 const imageRoutes = require('./routes/imageRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
-
+const usersRegisterRoute = require('./routes/usersregister');
 const orderRoutes = require('./routes/orderRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const bodyParser = require("body-parser");
@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use('/api', imageRoutes);
 app.use('/api', userRoutes);
 app.use('/', productRoutes);
-
+app.use('/api/users', usersRegisterRoute);
 app.use('/api', orderRoutes);
 app.use('/api', notificationRoutes);
 
@@ -39,29 +39,7 @@ app.get('/api/students', async (req, res) => {
   }
 });
 
-// Register user
-app.post('/api/users/register', async (req, res) => {
-  const { name, email, password, phone, address } = req.body;
 
-  try {
-    const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (userExists.rows.length > 0) {
-      return res.status(400).json({ message: "User already exists with this email." });
-    }
-
-    const newUser = await pool.query(
-      `INSERT INTO users (name, email, password, phone, address)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING *`,
-      [name, email, password, phone, address]
-    );
-
-    res.status(201).json({ message: "User registered successfully!", user: newUser.rows[0] });
-  } catch (err) {
-    console.error("Registration error:", err);
-    res.status(500).json({ message: "Server error during registration." });
-  }
-});
 
 
 // Start server
