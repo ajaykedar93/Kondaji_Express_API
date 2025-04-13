@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const pool = require('./db');
@@ -5,25 +6,27 @@ const pool = require('./db');
 const imageRoutes = require('./routes/imageRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
-const paymentRoute = require('./routes/payment');
+
 const orderRoutes = require('./routes/orderRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const bodyParser = require("body-parser");
 
 const app = express(); // ✅ this was missing in your code above
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
+
 
 // Routes
 app.use('/api', imageRoutes);
 app.use('/api', userRoutes);
 app.use('/', productRoutes);
-app.use('/api', paymentRoute);
+
 app.use('/api', orderRoutes);
 app.use('/api', notificationRoutes);
 
-require('dotenv').config();
 
 // Get all students
 app.get('/api/students', async (req, res) => {
@@ -59,7 +62,6 @@ app.post('/api/users/register', async (req, res) => {
     res.status(500).json({ message: "Server error during registration." });
   }
 });
-
 
 
 // Start server
