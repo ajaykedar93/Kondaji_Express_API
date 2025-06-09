@@ -32,4 +32,32 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// ✅ GET all users
+router.get('/users', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, name, email, phone, address, city, state, postal_code, country, profile_image, role FROM users'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Fetch users error:', err.message);
+    res.status(500).json({ msg: 'Failed to fetch users' });
+  }
+});
+
+// ✅ DELETE user by ID
+router.delete('/delete-user/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM users WHERE id = $1 RETURNING id', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.json({ msg: '✅ User deleted successfully' });
+  } catch (err) {
+    console.error('Delete user error:', err.message);
+    res.status(500).json({ msg: 'Failed to delete user' });
+  }
+});
+
 module.exports = router;
